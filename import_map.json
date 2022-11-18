@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "zod/": "https://deno.land/x/zod@v3.19.1/",
+    "std/": "https://deno.land/std@0.165.0/",
+    "oak/": "https://deno.land/x/oak@v11.1.0/"
+  }
+}
