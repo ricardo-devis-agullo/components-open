@@ -1,11 +1,11 @@
-import { Storage } from './storage.ts';
+import { Storage } from '../types.ts';
 
 const FILE_MATCH = /components\/(?<componentName>[\w.-]+)\/(?<componentVersion>[\w.-]+)\//;
 
 export function Repository(storage: Storage) {
   return {
     async getComponents() {
-      const fileList = (await storage.getList()).map((x) => x.Name);
+      const fileList = await storage.getList();
       const componentList = new Map<string, string[]>();
 
       for (const file of fileList) {

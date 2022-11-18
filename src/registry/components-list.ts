@@ -1,21 +1,6 @@
 import * as semver from 'std/semver/mod.ts';
 import { Storage } from './storage.ts';
 
-function getUnixUTCTimestamp(): number {
-  const d1 = new Date();
-  const d2 = new Date(
-    d1.getUTCFullYear(),
-    d1.getUTCMonth(),
-    d1.getUTCDate(),
-    d1.getUTCHours(),
-    d1.getUTCMinutes(),
-    d1.getUTCSeconds(),
-    d1.getUTCMilliseconds()
-  );
-
-  return Math.floor(d2.getTime());
-}
-
 type ComponentsList = Map<string, string[]>;
 
 export default function componentsList(conf: { componentsDir: string }, cdn: Storage) {
@@ -48,13 +33,13 @@ export default function componentsList(conf: { componentsDir: string }, cdn: Sto
         });
 
         return {
-          lastEdit: getUnixUTCTimestamp(),
+          lastEdit: Date.now(),
           components: componentsInfo,
         };
       } catch (err: any) {
         if (err.code === 'dir_not_found') {
           return {
-            lastEdit: getUnixUTCTimestamp(),
+            lastEdit: Date.now(),
             components: {},
           };
         }

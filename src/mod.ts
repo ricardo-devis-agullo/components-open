@@ -1,2 +1,3 @@
 export { Registry } from './registry/registry.ts';
-export type { RegistryOptions } from './types.ts';
+export { AzureStorage } from './registry/storage/azure.ts';
+export type { RegistryOptions, Storage } from './types.ts';

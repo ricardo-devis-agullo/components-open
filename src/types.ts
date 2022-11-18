@@ -1,15 +1,12 @@
-export interface StorageOptions {
-  sas: string;
-  accountName: string;
-  accountKey: string;
-  containerName: string;
-  componentsDir: string;
+export interface Storage {
+  getList(): Promise<string[]>;
+  getJson(path: string): Promise<any>;
+  getFilePath(path: string): string;
 }
 
 export interface RegistryConfig {
   baseUrl: string;
   port: number;
-  storage: StorageOptions;
   env: Record<string, string>;
   prefix: string;
   tempDir: string;

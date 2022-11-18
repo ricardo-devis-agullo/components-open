@@ -1,21 +1,6 @@
 // import getComponentsList from './components-list';
 import { eventsHandler } from './events-handler.ts';
 
-function getUnixUTCTimestamp(): number {
-  const d1 = new Date();
-  const d2 = new Date(
-    d1.getUTCFullYear(),
-    d1.getUTCMonth(),
-    d1.getUTCDate(),
-    d1.getUTCHours(),
-    d1.getUTCMinutes(),
-    d1.getUTCSeconds(),
-    d1.getUTCMilliseconds()
-  );
-
-  return Math.floor(d2.getTime());
-}
-
 type ComponentsList = Map<string, string[]>;
 
 export function componentsCache(conf: { pollingInterval: number }) {
@@ -29,7 +14,7 @@ export function componentsCache(conf: { pollingInterval: number }) {
       try {
         const data = await componentsList.getFromJson();
 
-        eventsHandler.fire('cache-poll', getUnixUTCTimestamp());
+        eventsHandler.fire('cache-poll', Date.now());
 
         if (data.lastEdit > cachedComponentsList.lastEdit) {
           cachedComponentsList = data;
