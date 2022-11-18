@@ -3,6 +3,7 @@ export interface StorageOptions {
   accountName: string;
   accountKey: string;
   containerName: string;
+  componentsDir: string;
 }
 
 export interface RegistryConfig {

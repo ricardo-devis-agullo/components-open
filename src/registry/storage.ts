@@ -1,5 +1,6 @@
 import { AzureStorage } from 'https://deno.land/x/azure_storage_client@0.5.0/mod.ts';
 import { parse } from 'https://deno.land/x/xml/mod.ts';
+import { StorageOptions } from '../types.ts';
 
 interface BlobList {
   Name: string;
@@ -23,10 +24,13 @@ interface BlobList {
   OrMetadata: null;
 }
 
-export function Storage(opts: { accountName: string; accountKey: string; sas: string }) {
+export function Storage(options: StorageOptions) {
   const storage = new AzureStorage(
-    `DefaultEndpointsProtocol=https;AccountName=${opts.accountName};AccountKey=${opts.accountKey};EndpointSuffix=core.windows.net`
+    `DefaultEndpointsProtocol=https;AccountName=${options.accountName};AccountKey=${options.accountKey};EndpointSuffix=core.windows.net`
   );
+
+  const url = (path: string) =>
+    `https://${options.accountName}.blob.core.windows.net/${options.containerName}/${path}${options.sas}`;
 
   return {
     async getList() {
@@ -36,6 +40,11 @@ export function Storage(opts: { accountName: string; accountKey: string; sas: st
       const blobs: BlobList[] = (parsed as any).EnumerationResults.Blobs.Blob;
 
       return blobs;
+    },
+    async getJson(path: string) {
+      const res = await fetch(url(path));
+
+      return res.json();
     },
   };
 }

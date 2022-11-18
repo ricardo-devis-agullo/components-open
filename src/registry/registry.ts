@@ -9,11 +9,7 @@ export function Registry(inputOptions: RegistryOptions) {
 
   return {
     start(): Promise<void> {
-      const repository = Repository({
-        accountName: options.storage.accountName,
-        accountKey: options.storage.accountKey,
-        sas: options.storage.sas,
-      });
+      const repository = Repository(options.storage);
       const app = new Application();
       const router = create(options.storage, repository);
       app.use(router.routes());

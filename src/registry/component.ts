@@ -8,7 +8,7 @@ export async function run(options: {
   request: Request;
 }) {
   const { data } = await import(
-    `https://${options.storage.accountName}.blob.core.windows.net/${options.storage.containerName}/components/${options.componentName}/${options.componentVersion}/server.ts${options.storage.sas}`
+    `https://${options.storage.accountName}.blob.core.windows.net/${options.storage.containerName}/${options.storage.componentsDir}/${options.componentName}/${options.componentVersion}/server.ts${options.storage.sas}`
   );
   const response = await data({
     baseUrl: '',

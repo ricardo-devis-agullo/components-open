@@ -1,13 +1,10 @@
+import { StorageOptions } from '../types.ts';
 import { Storage } from './storage.ts';
 
 const FILE_MATCH = /components\/(?<componentName>[\w.-]+)\/(?<componentVersion>[\w.-]+)\//;
 
-export function Repository(opts: { accountName: string; accountKey: string; sas: string }) {
-  const storage = Storage({
-    accountName: opts.accountName,
-    accountKey: opts.accountKey,
-    sas: opts.sas,
-  });
+export function Repository(options: StorageOptions) {
+  const storage = Storage(options);
 
   return {
     async getComponents() {
