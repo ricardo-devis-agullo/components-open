@@ -2,13 +2,6 @@ import { RegistryOptions, RegistryConfig } from '../types.ts';
 import settings from './settings.ts';
 
 export default function optionsSanitiser(options: RegistryOptions): RegistryConfig {
-  const storage = {
-    accountName: options.storage?.accountName!,
-    accountKey: options.storage?.accountKey!,
-    sas: options.storage?.sas!,
-    containerName: options.storage?.containerName!,
-  };
-
   let baseUrl = options.baseUrl;
   const hasTrailingPrefix = new RegExp(options.prefix + '$');
   if (!options.baseUrl.match(hasTrailingPrefix)) {
@@ -31,6 +24,5 @@ export default function optionsSanitiser(options: RegistryOptions): RegistryConf
     timeout: options.timeout || 1000 * 60 * 2,
     port: options.port || Number(Deno.env.get('PORT')) || 3000,
     fallbackRegistryUrl,
-    storage,
   };
 }
