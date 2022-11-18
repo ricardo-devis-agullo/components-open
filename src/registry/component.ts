@@ -1,14 +1,14 @@
 import { Request } from 'oak/mod.ts';
+import { StorageOptions } from '../types.ts';
 
 export async function run(options: {
-  storage: string;
+  storage: StorageOptions;
   componentName: string;
   componentVersion: string;
-  sas: string;
   request: Request;
 }) {
   const { data } = await import(
-    `${options.storage}/${options.componentName}/${options.componentVersion}/server.ts${options.sas}`
+    `https://${options.storage.accountName}.blob.core.windows.net/${options.storage.containerName}/components/${options.componentName}/${options.componentVersion}/server.ts${options.storage.sas}`
   );
   const response = await data({
     baseUrl: '',

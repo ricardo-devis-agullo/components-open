@@ -1,18 +1,21 @@
 import { Application } from 'oak/mod.ts';
 import { Repository } from './repository.ts';
 import { create } from './router.ts';
-import { Options } from '../types.ts';
+import { RegistryOptions } from '../types.ts';
+import optionsSanitiser from './options-sanitiser.ts';
 
-export function Registry(options: Options) {
+export function Registry(inputOptions: RegistryOptions) {
+  const options = optionsSanitiser(inputOptions);
+
   return {
     start(): Promise<void> {
       const repository = Repository({
-        accountName: options.accountName,
-        accountKey: options.accountKey,
-        sas: options.sas,
+        accountName: options.storage.accountName,
+        accountKey: options.storage.accountKey,
+        sas: options.storage.sas,
       });
       const app = new Application();
-      const router = create({ sas: options.sas, storage: options.storage }, repository);
+      const router = create(options.storage, repository);
       app.use(router.routes());
       app.use(router.allowedMethods());
 

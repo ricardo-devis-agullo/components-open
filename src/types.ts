@@ -1,7 +1,24 @@
-export interface RegistryOptions {
-  port: number;
+export interface StorageOptions {
+  sas: string;
   accountName: string;
   accountKey: string;
-  storage: string;
-  sas: string;
+  containerName: string;
+}
+
+export interface RegistryConfig {
+  baseUrl: string;
+  port: number;
+  storage: StorageOptions;
+  env: Record<string, string>;
+  prefix: string;
+  tempDir: string;
+  verbosity: number;
+  discovery: boolean;
+  pollingInterval: number;
+  fallbackRegistryUrl?: string;
+  timeout: number;
+}
+
+export interface RegistryOptions extends Partial<RegistryConfig> {
+  baseUrl: string;
 }
