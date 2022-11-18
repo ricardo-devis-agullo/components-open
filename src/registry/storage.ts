@@ -30,7 +30,7 @@ export function Storage(options: StorageOptions) {
   );
 
   const url = (path: string) =>
-    `https://${options.accountName}.blob.core.windows.net/${options.containerName}/${path}${options.sas}`;
+    `https://${options.accountName}.blob.core.windows.net/${options.containerName}/${options.componentsDir}/${path}${options.sas}`;
 
   return {
     async getList() {
@@ -46,8 +46,8 @@ export function Storage(options: StorageOptions) {
 
       return res.json();
     },
-    getServerPath(componentName: string, componentVersion: string) {
-      return url(`${options.componentsDir}/${componentName}/${componentVersion}/server.ts`);
+    getFilePath(path: string) {
+      return url(path);
     },
   };
 }

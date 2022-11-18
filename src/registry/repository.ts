@@ -20,7 +20,7 @@ export function Repository(storage: Storage) {
       return componentList;
     },
     getServerPath(componentName: string, componentVersion: string) {
-      return storage.getServerPath(componentName, componentVersion);
+      return storage.getFilePath(`${componentName}/${componentVersion}/server.ts`);
     },
   };
 }
