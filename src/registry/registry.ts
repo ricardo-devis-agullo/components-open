@@ -2,6 +2,7 @@ import { Application } from 'oak/mod.ts';
 import { Repository } from './repository.ts';
 import { create } from './router.ts';
 import { Storage, RegistryOptions } from '../types.ts';
+import eventsHandler from './events-handler.ts';
 import optionsSanitiser from './options-sanitiser.ts';
 
 export function Registry(storage: Storage, inputOptions: RegistryOptions) {
@@ -17,6 +18,7 @@ export function Registry(storage: Storage, inputOptions: RegistryOptions) {
 
       console.log(`HTTP webserver running. Access it at: http://localhost:${options.port}/`);
 
+      eventsHandler.fire('start', null);
       return app.listen({ port: 8080 });
     },
   };

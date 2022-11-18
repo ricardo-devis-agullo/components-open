@@ -17,7 +17,7 @@ export interface RequestData {
 
 type Events = {
   error: { code: string; message: string };
-  start: unknown;
+  start: null;
   'cache-poll': number;
   request: RequestData;
   'component-retrieved': {
