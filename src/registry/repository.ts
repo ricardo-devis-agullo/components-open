@@ -1,11 +1,8 @@
-import { StorageOptions } from '../types.ts';
 import { Storage } from './storage.ts';
 
 const FILE_MATCH = /components\/(?<componentName>[\w.-]+)\/(?<componentVersion>[\w.-]+)\//;
 
-export function Repository(options: StorageOptions) {
-  const storage = Storage(options);
-
+export function Repository(storage: Storage) {
   return {
     async getComponents() {
       const fileList = (await storage.getList()).map((x) => x.Name);
@@ -21,6 +18,9 @@ export function Repository(options: StorageOptions) {
       }
 
       return componentList;
+    },
+    getServerPath(componentName: string, componentVersion: string) {
+      return storage.getServerPath(componentName, componentVersion);
     },
   };
 }

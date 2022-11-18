@@ -46,6 +46,9 @@ export function Storage(options: StorageOptions) {
 
       return res.json();
     },
+    getServerPath(componentName: string, componentVersion: string) {
+      return url(`${options.componentsDir}/${componentName}/${componentVersion}/server.ts`);
+    },
   };
 }
 

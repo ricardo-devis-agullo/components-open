@@ -2,9 +2,8 @@ import { Router, Status, isHttpError } from 'oak/mod.ts';
 import { Repository } from './repository.ts';
 import { run } from './component.ts';
 import { getAvailableVersion } from './version-handler.ts';
-import { StorageOptions } from '../types.ts';
 
-export function create(options: StorageOptions, repository: Repository) {
+export function create(repository: Repository) {
   const router = new Router();
 
   router.get('/registry/:componentName', async (ctx) => {
@@ -26,7 +25,7 @@ export function create(options: StorageOptions, repository: Repository) {
       const response = await run({
         componentName: componentName,
         componentVersion: version,
-        storage: options,
+        repository,
         request: ctx.request,
       });
 
@@ -46,7 +45,7 @@ export function create(options: StorageOptions, repository: Repository) {
       const response = await run({
         componentName: ctx.params.componentName,
         componentVersion: ctx.params.componentVersion,
-        storage: options,
+        repository,
         request: ctx.request,
       });
 
