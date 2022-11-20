@@ -1,6 +1,7 @@
 export interface Storage {
   getList(): Promise<string[]>;
   getJson(path: string): Promise<any>;
+  putFile(path: string, data: string): Promise<void>;
   getFilePath(path: string): string;
 }
 
