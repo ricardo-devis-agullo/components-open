@@ -1,4 +1,5 @@
 import initTemplate from './init-template.ts';
+import packageComponents from './package-components.ts';
 import { Logger } from '../logger.ts';
 
 export function validateComponentName(componentName: string): boolean {
@@ -22,6 +23,7 @@ export function Local() {
 
       await initTemplate(options);
     },
+    package: packageComponents,
   };
 }
 

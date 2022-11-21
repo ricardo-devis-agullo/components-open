@@ -18,5 +18,8 @@ export async function runCli() {
     .action(async (_options, componentPath) => {
       await init(dependencies)({ componentPath });
     })
+    .command('package', 'Package a component')
+    .arguments('<componentPath>')
+    .action(async (_options, componentPath) => {})
     .parse(Deno.args);
 }
