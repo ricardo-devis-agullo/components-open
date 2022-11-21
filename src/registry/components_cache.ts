@@ -1,5 +1,5 @@
-// import getComponentsList from './components-list';
-import { eventsHandler } from './events-handler.ts';
+// import getComponentsList from './components_list.ts';
+import { eventsHandler } from './events_handler.ts';
 
 type ComponentsList = Map<string, string[]>;
 

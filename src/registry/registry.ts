@@ -2,8 +2,8 @@ import { Application } from 'oak/mod.ts';
 import { Repository } from './repository.ts';
 import { create } from './router.ts';
 import { Storage, RegistryOptions } from '../types.ts';
-import eventsHandler from './events-handler.ts';
-import optionsSanitiser from './options-sanitiser.ts';
+import eventsHandler from './events_handler.ts';
+import optionsSanitiser from './options_sanitiser.ts';
 
 export function Registry(storage: Storage, inputOptions: RegistryOptions) {
   const options = optionsSanitiser(inputOptions);

@@ -1,7 +1,7 @@
 import { Router, Status, isHttpError } from 'oak/mod.ts';
 import { Repository } from './repository.ts';
 import { run } from './component.ts';
-import { getAvailableVersion } from './version-handler.ts';
+import { getAvailableVersion } from './version_handler.ts';
 
 export function create(repository: Repository) {
   const router = new Router();

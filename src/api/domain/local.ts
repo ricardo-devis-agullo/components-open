@@ -1,5 +1,5 @@
-import initTemplate from './init-template.ts';
-import packageComponents from './package-components.ts';
+import initTemplate from './init_template.ts';
+import packageComponents from './package_components.ts';
 import { Logger } from '../logger.ts';
 
 export function validateComponentName(componentName: string): boolean {

@@ -1,6 +1,6 @@
 import { basename, join } from 'std/path/mod.ts';
 import { emptyDir } from 'std/fs/empty_dir.ts';
-import { compile } from './compile-component.ts';
+import { compile } from './compile_component.ts';
 
 export interface PackageOptions {
   componentPath: string;
