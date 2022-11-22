@@ -1,9 +1,11 @@
 {
   "imports": {
-    "zod/": "https://deno.land/x/zod@v3.19.1/",
-    "std/": "https://deno.land/std@0.165.0/",
-    "oak/": "https://deno.land/x/oak@v11.1.0/",
     "azure_storage_client/": "https://deno.land/x/azure_storage_client@0.5.0/",
-    "xml/": "https://deno.land/x/xml@2.0.4/"
+    "esbuild/": "https://deno.land/x/esbuild@v0.15.15/",
+    "esbuild_deno_loader/": "https://deno.land/x/esbuild_deno_loader@0.6.0/",
+    "oak/": "https://deno.land/x/oak@v11.1.0/",
+    "std/": "https://deno.land/std@0.165.0/",
+    "xml/": "https://deno.land/x/xml@2.0.4/",
+    "zod/": "https://deno.land/x/zod@v3.19.1/"
   }
 }
