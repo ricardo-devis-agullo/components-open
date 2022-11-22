@@ -1,5 +1,4 @@
-import { basename, join } from 'std/path/mod.ts';
-import { emptyDir } from 'std/fs/empty_dir.ts';
+import { basename, join, emptyDir } from '../../deps.ts';
 import { compile } from './compile_component.ts';
 
 export interface PackageOptions {

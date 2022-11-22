@@ -1,22 +1,21 @@
-import { green } from 'std/fmt/colors.ts';
-import { join, basename } from 'std/path/mod.ts';
+import { colors, join, basename } from '../../deps.ts';
 import type { Local } from '../domain/local.ts';
 import { Logger } from '../logger.ts';
 
 const initSuccess = (componentName: string, componentPath: string): string => {
-  return `${green(`Success! Created ${componentName} at ${componentPath}`)}
+  return `${colors.green(`Success! Created ${componentName} at ${componentPath}`)}
 
 From here you can run several commands
 
-${green('oc --help')}
+${colors.green('oc --help')}
 To see a detailed list of all the commands available
 
 We suggest that you begin by typing:
 
-${green('oc dev . 3030')}
+${colors.green('oc dev . 3030')}
 
 If you have questions, issues or feedback about OpenComponents, please, raise an issue on GitHub:
-${green('https://github.com/opencomponents/oc/blob/master/src/cli/commands.ts')}
+${colors.green('https://github.com/opencomponents/oc/blob/master/src/cli/commands.ts')}
 
 Happy coding
 `;

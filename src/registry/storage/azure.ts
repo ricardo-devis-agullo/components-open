@@ -1,5 +1,4 @@
-import { AzureStorage as AzureStorageClient } from 'azure_storage_client/mod.ts';
-import { parse as XMLParse } from 'xml/mod.ts';
+import { AzureStorageClient, XMLParse } from '../../deps.ts';
 import { Storage } from '../../types.ts';
 
 interface BlobList {

@@ -1,4 +1,4 @@
-import { Application } from 'oak/mod.ts';
+import { oak } from '../deps.ts';
 import { Repository } from './repository.ts';
 import { create } from './router.ts';
 import { Storage, RegistryOptions } from '../types.ts';
@@ -11,7 +11,7 @@ export function Registry(storage: Storage, inputOptions: RegistryOptions) {
   return {
     start(): Promise<void> {
       const repository = Repository(storage);
-      const app = new Application();
+      const app = new oak.Application();
       const router = create(repository);
       app.use(router.routes());
       app.use(router.allowedMethods());

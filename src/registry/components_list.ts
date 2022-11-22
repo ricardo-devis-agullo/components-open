@@ -1,5 +1,5 @@
-import * as semver from 'std/semver/mod.ts';
-import { Storage } from './storage.ts';
+import { semver } from '../deps.ts';
+import { Storage } from '../types.ts';
 
 type ComponentsList = Map<string, string[]>;
 

@@ -1,11 +1,11 @@
-import { Request } from 'oak/mod.ts';
+import { oak } from '../deps.ts';
 import { Repository } from './repository.ts';
 
 export async function run(options: {
   repository: Repository;
   componentName: string;
   componentVersion: string;
-  request: Request;
+  request: oak.Request;
 }) {
   const { data } = await import(
     options.repository.getServerPath(options.componentName, options.componentVersion)

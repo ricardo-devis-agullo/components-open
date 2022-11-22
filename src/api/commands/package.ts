@@ -1,7 +1,6 @@
-import { resolve } from 'std/path/mod.ts';
+import { resolve } from '../../deps.ts';
 import { Logger } from '../logger.ts';
 import type { Local } from '../domain/local.ts';
-// import { Component } from '../../types';
 
 const cliPackage =
   ({ local, logger }: { local: Local; logger: Logger }) =>

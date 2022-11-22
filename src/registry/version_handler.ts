@@ -1,4 +1,4 @@
-import * as semver from 'std/semver/mod.ts';
+import { semver } from '../deps.ts';
 
 function maxVersion(list: string[]) {
   return semver.sort(list).pop();

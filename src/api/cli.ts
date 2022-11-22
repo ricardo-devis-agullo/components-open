@@ -1,4 +1,4 @@
-import { Command } from 'https://deno.land/x/cliffy@v0.25.4/command/mod.ts';
+import { Command } from '../deps.ts';
 import { init } from './commands/init.ts';
 import { Local } from './domain/local.ts';
 import { logger } from './logger.ts';

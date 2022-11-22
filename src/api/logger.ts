@@ -1,7 +1,6 @@
-import { green, red, yellow } from 'std/fmt/colors.ts';
+import { colors } from '../deps.ts';
 
-const colors = { green, red, yellow };
-type Color = keyof typeof colors;
+type Color = 'green' | 'red' | 'yellow';
 
 const log = (msg: string, color: Color | null) => {
   console.log(color ? colors[color](msg) : msg);

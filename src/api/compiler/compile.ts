@@ -1,5 +1,4 @@
-import * as esbuild from 'esbuild/mod.js';
-import { denoPlugin } from 'esbuild_deno_loader/mod.ts';
+import { esbuild, denoPlugin } from '../../deps.ts';
 import wrapper from './wrapper.ts';
 
 async function getImportMapURL() {

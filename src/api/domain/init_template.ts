@@ -1,5 +1,4 @@
-import { copy } from 'std/fs/copy.ts';
-import { join } from 'std/path/mod.ts';
+import { join, copy } from '../../deps.ts';
 
 export default async function initTemplate({
   componentPath,

@@ -1,10 +1,12 @@
-import { Router, Status, isHttpError } from 'oak/mod.ts';
+import { oak } from '../deps.ts';
 import { Repository } from './repository.ts';
 import { run } from './component.ts';
 import { getAvailableVersion } from './version_handler.ts';
 
+const { Status } = oak;
+
 export function create(repository: Repository) {
-  const router = new Router();
+  const router = new oak.Router();
 
   router.get('/registry/:componentName', async (ctx) => {
     const components = await repository.getComponents();
@@ -63,7 +65,7 @@ export function create(repository: Repository) {
     try {
       await next();
     } catch (err) {
-      if (isHttpError(err)) {
+      if (oak.isHttpError(err)) {
         context.response.status = err.status;
         const { message, status, stack } = err;
         if (context.request.accepts('json')) {
