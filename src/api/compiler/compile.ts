@@ -1,11 +1,11 @@
-import { esbuild, denoPlugin } from '../../deps.ts';
+import { esbuild, denoPlugin, toFileUrl, join } from '../../deps.ts';
 import wrapper from './wrapper.ts';
 
 async function getImportMapURL() {
   try {
-    const denoJson = JSON.parse(await Deno.readTextFile('./deno.json'));
+    const denoJson = JSON.parse(await Deno.readTextFile(join(Deno.cwd(), 'deno.json')));
     if ('importMap' in denoJson) {
-      const importMapURL = new URL(denoJson['importMap'], import.meta.url);
+      const importMapURL = toFileUrl(join(Deno.cwd(), denoJson['importMap']));
 
       return importMapURL;
     }
@@ -20,7 +20,8 @@ export async function compileClient({
   componentVersion: string;
 }) {
   const absWorkingDir = Deno.cwd();
-  const entryPoint = new URL('App.tsx', import.meta.url);
+
+  const entryPoint = toFileUrl(join(Deno.cwd(), 'App.tsx'));
   let wrapperFilePath = '';
 
   try {

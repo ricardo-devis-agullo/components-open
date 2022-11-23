@@ -1,6 +1,4 @@
-import { esbuild } from 'https://deno.land/x/esbuild_deno_loader@0.6.0/deps.ts';
-
-export { join, basename, resolve } from 'https://deno.land/std@0.165.0/path/mod.ts';
+export { join, basename, resolve, toFileUrl } from 'https://deno.land/std@0.165.0/path/mod.ts';
 export * as colors from 'https://deno.land/std@0.165.0/fmt/colors.ts';
 export { emptyDir } from 'https://deno.land/std@0.165.0/fs/empty_dir.ts';
 export { copy } from 'https://deno.land/std@0.165.0/fs/copy.ts';
