@@ -8,6 +8,7 @@ export {
 export * as colors from 'https://deno.land/std@0.165.0/fmt/colors.ts';
 export { emptyDir } from 'https://deno.land/std@0.165.0/fs/empty_dir.ts';
 export { copy } from 'https://deno.land/std@0.165.0/fs/copy.ts';
+export { walk } from 'https://deno.land/std@0.165.0/fs/walk.ts';
 export { ensureDir } from 'https://deno.land/std@0.165.0/fs/ensure_dir.ts';
 export * as semver from 'https://deno.land/std@0.165.0/semver/mod.ts';
 
