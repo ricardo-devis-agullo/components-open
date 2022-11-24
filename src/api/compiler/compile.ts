@@ -8,6 +8,7 @@ import {
   ensureDir,
 } from '../../deps.ts';
 import reactWrapper from './reactWrapper.ts';
+import serverWrapper from './serverTemplate.ts';
 import viewTemplate from './viewTemplate.ts';
 
 const hashPlaceholder = '__OC_DENO_HASH--PLACEHOLDER__';
@@ -49,7 +50,6 @@ export async function compileClient({ base, entrypoint }: { base: string; entryp
 
     await Deno.writeTextFile(wrapperFilePath, reactWrapper(new URL(entrypoint, base)));
 
-    await ensureEsbuildInitialized();
     const bundle = await esbuild.build({
       absWorkingDir: fromFileUrl(base),
       bundle: true,
@@ -64,7 +64,45 @@ export async function compileClient({ base, entrypoint }: { base: string; entryp
       treeShaking: true,
       write: false,
     });
-    esbuild.stop();
+
+    const code = new TextDecoder().decode(bundle.outputFiles[0].contents);
+    const bundleHash = hashBuilder(code);
+
+    return { content: new TextEncoder().encode(code), bundleHash };
+  } finally {
+    if (wrapperFilePath) {
+      Deno.removeSync(wrapperFilePath);
+    }
+  }
+}
+
+export async function compileServer({ base, entrypoint }: { base: string; entrypoint: string }) {
+  let wrapperFilePath = '';
+
+  try {
+    wrapperFilePath = await Deno.makeTempFile({ suffix: '.ts' });
+
+    await Deno.writeTextFile(
+      wrapperFilePath,
+      serverWrapper({
+        entry: new URL(entrypoint, base),
+        componentName: 'mycomp',
+        componentVersion: '1.2.3',
+      })
+    );
+
+    const bundle = await esbuild.build({
+      absWorkingDir: fromFileUrl(base),
+      bundle: true,
+      entryPoints: [wrapperFilePath],
+      format: 'esm',
+      minify: true,
+      outfile: '',
+      platform: 'neutral',
+      plugins: [denoPlugin({ importMapURL: await getImportMapURL() })],
+      treeShaking: true,
+      write: false,
+    });
 
     let code = new TextDecoder().decode(bundle.outputFiles[0].contents);
     const bundleHash = hashBuilder(code);
@@ -78,21 +116,6 @@ export async function compileClient({ base, entrypoint }: { base: string; entryp
   }
 }
 
-export async function compileServer(entrypoint: URL) {
-  const proc = Deno.run({
-    cmd: [Deno.execPath(), 'bundle', '--quiet', fromFileUrl(entrypoint)],
-    cwd: Deno.cwd(),
-    stdout: 'piped',
-  });
-  const raw = await proc.output();
-  const status = await proc.status();
-  if (!status.success) {
-    throw new Error(`Failed to call 'deno build' on folder'`);
-  }
-
-  return raw;
-}
-
 export async function compile(
   base: string,
   opts: {
@@ -102,14 +125,16 @@ export async function compile(
 ) {
   const packageDir = fromFileUrl(new URL('_package', base).href);
   await ensureDir(packageDir);
+  await ensureEsbuildInitialized();
 
   const [client, server] = await Promise.all([
     compileClient({
       base,
       entrypoint: opts.clientEntrypoint,
     }),
-    compileServer(new URL(opts.serverEntrypoint, base)),
+    compileServer({ base, entrypoint: opts.serverEntrypoint }),
   ]);
+  esbuild.stop();
 
   const templateString = viewTemplate({
     bundleHash: client.bundleHash,
@@ -121,6 +146,6 @@ export async function compile(
   await Promise.all([
     Deno.writeTextFile(join(packageDir, 'template.js'), viewWrapper(templateHash, templateString)),
     Deno.writeFile(join(packageDir, `${bundleName}.js`), client.content),
-    Deno.writeFile(join(packageDir, 'server.js'), server),
+    Deno.writeFile(join(packageDir, 'server.js'), server.content),
   ]);
 }
