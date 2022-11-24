@@ -5,6 +5,21 @@ import { getAvailableVersion } from './version_handler.ts';
 
 const { Status } = oak;
 
+interface ComponentResponse {
+  type: string;
+  version: string;
+  requestVersion: string;
+  name: string;
+  renderMode: 'unrendered';
+  href: string;
+  data: any;
+  template: {
+    src: string;
+    type: string;
+    key: string;
+  };
+}
+
 export function create(repository: Repository) {
   const router = new oak.Router();
 
@@ -24,12 +39,26 @@ export function create(repository: Repository) {
     }
 
     try {
-      const response = await run({
+      const componentData = await run({
         componentName: componentName,
         componentVersion: version,
         repository,
         request: ctx.request,
       });
+      const response: ComponentResponse = {
+        type: 'oc-component',
+        version,
+        requestVersion: '',
+        name: componentName,
+        renderMode: 'unrendered',
+        href: ctx.request.url.href,
+        data: componentData,
+        template: {
+          key: 'TEMPLATE_HASH',
+          src: 'STORAGEURL/template.js',
+          type: 'react',
+        },
+      };
 
       ctx.response.body = response;
     } catch (err) {
@@ -44,12 +73,26 @@ export function create(repository: Repository) {
 
   router.get('/registry/:componentName/:componentVersion', async (ctx) => {
     try {
-      const response = await run({
+      const componentData = await run({
         componentName: ctx.params.componentName,
         componentVersion: ctx.params.componentVersion,
         repository,
         request: ctx.request,
       });
+      const response: ComponentResponse = {
+        type: 'oc-component',
+        version: ctx.params.componentVersion,
+        requestVersion: ctx.params.componentVersion,
+        name: ctx.params.componentName,
+        renderMode: 'unrendered',
+        href: ctx.request.url.href,
+        data: componentData,
+        template: {
+          key: 'TEMPLATE_HASH',
+          src: 'STORAGEURL/template.js',
+          type: 'react',
+        },
+      };
 
       ctx.response.body = response;
     } catch (err) {
@@ -61,7 +104,7 @@ export function create(repository: Repository) {
     }
   });
 
-  router.use(async (context, next) => {
+  router.use(async function errorHandler(context, next) {
     try {
       await next();
     } catch (err) {

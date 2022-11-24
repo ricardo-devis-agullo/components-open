@@ -8,7 +8,7 @@ interface OcProps {
   [key: string]: any;
 }
 
-export default function wrapper(entry: URL) {
+export default function reactWrapper(entry: URL) {
   return `
     import App from "${entry.href}";
 

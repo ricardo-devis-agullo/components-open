@@ -7,7 +7,7 @@ import {
   join,
   ensureDir,
 } from '../../deps.ts';
-import wrapper from './wrapper.ts';
+import reactWrapper from './reactWrapper.ts';
 import viewTemplate from './viewTemplate.ts';
 
 const hashPlaceholder = '__OC_DENO_HASH--PLACEHOLDER__';
@@ -47,7 +47,7 @@ export async function compileClient({ base, entrypoint }: { base: string; entryp
   try {
     wrapperFilePath = await Deno.makeTempFile({ suffix: '.tsx' });
 
-    await Deno.writeTextFile(wrapperFilePath, wrapper(new URL(entrypoint, base)));
+    await Deno.writeTextFile(wrapperFilePath, reactWrapper(new URL(entrypoint, base)));
 
     await ensureEsbuildInitialized();
     const bundle = await esbuild.build({
