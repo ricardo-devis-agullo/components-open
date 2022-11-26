@@ -23,6 +23,15 @@ interface ComponentResponse {
 export function create(repository: Repository) {
   const router = new oak.Router();
 
+  router.get('/registry', async (ctx) => {
+    const components = await repository.getComponents();
+
+    ctx.response.body = {
+      href: ctx.request.url,
+      components: Object.fromEntries(components.entries()),
+    };
+  });
+
   router.get('/registry/:componentName', async (ctx) => {
     const components = await repository.getComponents();
     const { componentName } = ctx.params;

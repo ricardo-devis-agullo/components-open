@@ -16,10 +16,12 @@ export function Registry(storage: Storage, inputOptions: RegistryOptions) {
       app.use(router.routes());
       app.use(router.allowedMethods());
 
-      console.log(`HTTP webserver running. Access it at: http://localhost:${options.port}/`);
+      console.log(
+        `HTTP webserver running. Access it at: http://localhost:${options.port}/registry`
+      );
 
       eventsHandler.fire('start', null);
-      return app.listen({ port: 8080 });
+      return app.listen({ port: options.port });
     },
   };
 }
