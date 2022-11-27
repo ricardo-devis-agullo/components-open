@@ -8,9 +8,9 @@ interface OcProps {
   [key: string]: any;
 }
 
-export default function reactWrapper(entry: URL) {
+export default function reactWrapper(entry: string) {
   return `
-    import App from "${entry.href}";
+    import App from "${entry}";
 
     export default ${Bundle.toString().replace(TEMPLATE_PLACEHOLDER, '<App {...rest} />')}
   `;

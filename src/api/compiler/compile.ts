@@ -5,6 +5,7 @@ import {
   toFileUrl,
   fromFileUrl,
   join,
+  dirname,
   ensureDir,
 } from '../../deps.ts';
 import reactWrapper from './reactWrapper.ts';
@@ -42,16 +43,22 @@ async function ensureEsbuildInitialized() {
   }
 }
 
-export async function compileClient({ base, entrypoint }: { base: string; entrypoint: string }) {
+export async function compileClient({
+  componentPath,
+  entrypoint,
+}: {
+  componentPath: string;
+  entrypoint: string;
+}) {
   let wrapperFilePath = '';
 
   try {
     wrapperFilePath = await Deno.makeTempFile({ suffix: '.tsx' });
 
-    await Deno.writeTextFile(wrapperFilePath, reactWrapper(new URL(entrypoint, base)));
+    await Deno.writeTextFile(wrapperFilePath, reactWrapper(join(componentPath, entrypoint)));
 
     const bundle = await esbuild.build({
-      absWorkingDir: fromFileUrl(base),
+      absWorkingDir: componentPath,
       bundle: true,
       entryPoints: [wrapperFilePath],
       format: 'iife',
@@ -76,7 +83,13 @@ export async function compileClient({ base, entrypoint }: { base: string; entryp
   }
 }
 
-export async function compileServer({ base, entrypoint }: { base: string; entrypoint: string }) {
+export async function compileServer({
+  componentPath,
+  entrypoint,
+}: {
+  componentPath: string;
+  entrypoint: string;
+}) {
   let wrapperFilePath = '';
 
   try {
@@ -85,14 +98,14 @@ export async function compileServer({ base, entrypoint }: { base: string; entryp
     await Deno.writeTextFile(
       wrapperFilePath,
       serverWrapper({
-        entry: new URL(entrypoint, base),
+        entry: join(componentPath, entrypoint),
         componentName: 'mycomp',
         componentVersion: '1.2.3',
       })
     );
 
     const bundle = await esbuild.build({
-      absWorkingDir: fromFileUrl(base),
+      absWorkingDir: componentPath,
       bundle: true,
       entryPoints: [wrapperFilePath],
       format: 'esm',
@@ -117,22 +130,22 @@ export async function compileServer({ base, entrypoint }: { base: string; entryp
 }
 
 export async function compile(
-  base: string,
+  componentPath: string,
   opts: {
     clientEntrypoint: string;
     serverEntrypoint: string;
   }
 ) {
-  const packageDir = fromFileUrl(new URL('_package', base).href);
+  const packageDir = join(componentPath, '_package');
   await ensureDir(packageDir);
   await ensureEsbuildInitialized();
 
   const [client, server] = await Promise.all([
     compileClient({
-      base,
+      componentPath,
       entrypoint: opts.clientEntrypoint,
     }),
-    compileServer({ base, entrypoint: opts.serverEntrypoint }),
+    compileServer({ componentPath, entrypoint: opts.serverEntrypoint }),
   ]);
   esbuild.stop();
 

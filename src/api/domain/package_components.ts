@@ -1,5 +1,5 @@
-import { basename, join, emptyDir } from '../../deps.ts';
-import { compile } from './compile_component.ts';
+import { basename, join, emptyDir, toFileUrl } from '../../deps.ts';
+import { compile } from '../compiler/compile.ts';
 
 export interface PackageOptions {
   componentPath: string;
@@ -34,7 +34,10 @@ async function packageComponents(options: PackageOptions) {
     production,
   };
 
-  return compile(compileOptions);
+  return compile(compileOptions.componentPath, {
+    clientEntrypoint: './App.tsx',
+    serverEntrypoint: './server.ts',
+  });
 }
 
 export default packageComponents;

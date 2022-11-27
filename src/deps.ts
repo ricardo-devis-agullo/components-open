@@ -1,5 +1,6 @@
 export {
   join,
+  dirname,
   basename,
   resolve,
   toFileUrl,
@@ -11,6 +12,7 @@ export { copy } from 'https://deno.land/std@0.165.0/fs/copy.ts';
 export { walk } from 'https://deno.land/std@0.165.0/fs/walk.ts';
 export { ensureDir } from 'https://deno.land/std@0.165.0/fs/ensure_dir.ts';
 export * as semver from 'https://deno.land/std@0.165.0/semver/mod.ts';
+export { delay } from 'https://deno.land/std@0.166.0/async/delay.ts';
 
 export * as checksum from 'https://deno.land/x/checksum@1.2.0/mod.ts';
 export * as oak from 'https://deno.land/x/oak@v11.1.0/mod.ts';

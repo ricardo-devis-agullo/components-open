@@ -7,12 +7,12 @@ export default function wrapper({
   componentName,
   componentVersion,
 }: {
-  entry: URL;
+  entry: string;
   componentName: string;
   componentVersion: string;
 }) {
   return `
-    import { data as dataProvider } from "${entry.href}";
+    import { data as dataProvider } from "${entry}";
 
     const componentName = '${componentName}';
     const componentVersion = '${componentVersion}';
