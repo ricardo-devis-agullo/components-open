@@ -37,6 +37,7 @@ async function packageComponents(options: PackageOptions) {
   return compile(compileOptions.componentPath, {
     clientEntrypoint: './App.tsx',
     serverEntrypoint: './server.ts',
+    dev: true,
   });
 }
 
