@@ -161,43 +161,48 @@ export async function compile(
   const cleanTempFiles = () =>
     Promise.all([tryRemove(clientWrapperFilePath), tryRemove(serverWrapperFilePath)]);
 
-  const [client, server] = await Promise.all([
-    buildClient({
-      componentPath,
-      entrypoint: opts.clientEntrypoint,
-      dev: opts.dev,
-      wrapperFilePath: clientWrapperFilePath,
-    }),
-    buildServer({
-      componentPath,
-      entrypoint: opts.serverEntrypoint,
-      dev: opts.dev,
-      wrapperFilePath: serverWrapperFilePath,
-    }),
-  ]);
-  const rebuild = async () => {
-    if (client.rebuild && server.rebuild) {
-      const [clientRebuild, serverRebuild] = await Promise.all([
-        client.rebuild(),
-        server.rebuild(),
-      ]);
-      await Promise.all([
-        wrapClient(clientRebuild as EsbuildResult, packageDir),
-        wrapServer(serverRebuild as EsbuildResult, packageDir),
-      ]);
+  try {
+    const [client, server] = await Promise.all([
+      buildClient({
+        componentPath,
+        entrypoint: opts.clientEntrypoint,
+        dev: opts.dev,
+        wrapperFilePath: clientWrapperFilePath,
+      }),
+      buildServer({
+        componentPath,
+        entrypoint: opts.serverEntrypoint,
+        dev: opts.dev,
+        wrapperFilePath: serverWrapperFilePath,
+      }),
+    ]);
+    const rebuild = async () => {
+      if (client.rebuild && server.rebuild) {
+        const [clientRebuild, serverRebuild] = await Promise.all([
+          client.rebuild(),
+          server.rebuild(),
+        ]);
+        await Promise.all([
+          wrapClient(clientRebuild as EsbuildResult, packageDir),
+          wrapServer(serverRebuild as EsbuildResult, packageDir),
+        ]);
+      }
+    };
+    if (!opts.dev) {
+      esbuild.stop();
+      await cleanTempFiles();
     }
-  };
-  if (!opts.dev) {
+    Deno.addSignalListener('SIGINT', async () => {
+      esbuild.stop();
+      await cleanTempFiles();
+      Deno.exit(0);
+    });
+
+    await Promise.all([wrapClient(client, packageDir), wrapServer(server, packageDir)]);
+
+    return { rebuild };
+  } finally {
     esbuild.stop();
     await cleanTempFiles();
   }
-  Deno.addSignalListener('SIGINT', async () => {
-    esbuild.stop();
-    await cleanTempFiles();
-    Deno.exit(0);
-  });
-
-  await Promise.all([wrapClient(client, packageDir), wrapServer(server, packageDir)]);
-
-  return { rebuild };
 }
