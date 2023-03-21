@@ -18,6 +18,6 @@ export * as checksum from 'https://deno.land/x/checksum@1.4.0/mod.ts';
 export * as oak from 'https://deno.land/x/oak@v12.1.0/mod.ts';
 export { Command } from 'https://deno.land/x/cliffy@v0.25.7/command/mod.ts';
 export { AzureStorage as AzureStorageClient } from 'https://deno.land/x/azure_storage_client@0.7.0/mod.ts';
-export * as esbuild from 'https://deno.land/x/esbuild@v0.17.11/mod.js';
+export * as esbuild from 'https://deno.land/x/esbuild@v0.15.10/mod.js';
 export { denoPlugin } from 'https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts';
 export { parse as XMLParse } from 'https://deno.land/x/xml@2.1.0/mod.ts';
