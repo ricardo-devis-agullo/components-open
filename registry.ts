@@ -1,10 +1,11 @@
-// import { parse } from 'https://deno.land/std@0.202.0/flags/mod.ts';
 import { Hono } from 'https://deno.land/x/hono@v3.7.0/mod.ts';
 import { ComponentRenderer } from './get-component.ts';
 import { Repository } from './repository.ts';
+import { RegistryOptions } from './types.ts';
+import optionsSanitiser from './options_sanitiser.ts';
 
-export function Registry() {
-  const port = 3000;
+export function Registry(inputOptions: RegistryOptions) {
+  const options = optionsSanitiser(inputOptions);
   const app = new Hono();
   const repository = Repository();
   const getComponent = ComponentRenderer(repository);
@@ -27,9 +28,5 @@ export function Registry() {
     }
   });
 
-  Deno.serve({ port }, app.fetch);
-}
-
-if (import.meta.main) {
-  Registry();
+  Deno.serve({ port: options.port }, app.fetch);
 }
